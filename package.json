@@ -1,0 +1,75 @@
+{
+  "name": "snapport",
+  "version": "0.1.0",
+  "description": "Capture. Annotate. Report. Instantly.",
+  "main": "dist/main/main/main.js",
+  "scripts": {
+    "build": "tsc --project tsconfig.main.json && tsc --project tsconfig.renderer.json",
+    "build:main": "tsc --project tsconfig.main.json",
+    "build:renderer": "tsc --project tsconfig.renderer.json",
+    "start": "npm run build && electron .",
+    "dev": "concurrently \"tsc --project tsconfig.main.json --watch\" \"tsc --project tsconfig.renderer.json --watch\" \"wait-on dist/main/main.js && electron .\"",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
+  },
+  "keywords": [
+    "bug-reporting",
+    "screenshot",
+    "annotation",
+    "electron",
+    "desktop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "electron-updater": "^6.8.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "concurrently": "^8.0.0",
+    "electron": "^29.0.0",
+    "electron-builder": "^24.0.0",
+    "typescript": "^5.4.0",
+    "wait-on": "^7.0.0"
+  },
+  "build": {
+    "appId": "com.snapport.app",
+    "productName": "Snapport",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "src/renderer/index.html",
+      "src/renderer/styles.css",
+      "assets/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Snapport"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "hentzLF",
+      "repo": "Snapport"
+    }
+  }
+}

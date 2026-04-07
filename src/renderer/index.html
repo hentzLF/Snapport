@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Snapport</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Update banner -->
+    <div id="update-banner" class="hidden">
+      <span id="update-msg">Downloading update…</span>
+      <button id="update-install-btn" class="hidden">Restart &amp; Install</button>
+      <button id="update-dismiss-btn">✕</button>
+    </div>
+
+    <!-- Pre-captured screenshot displayed as background -->
+    <img id="screenshot-bg" alt="" />
+
+    <!-- Selection overlay with cutout -->
+    <div id="selection-overlay">
+      <svg id="selection-svg" width="100%" height="100%">
+        <defs>
+          <mask id="selection-mask">
+            <rect width="100%" height="100%" fill="white" />
+            <rect id="mask-cutout" x="0" y="0" width="0" height="0" fill="black" />
+          </mask>
+        </defs>
+        <rect width="100%" height="100%" fill="rgba(0,0,0,0.5)" mask="url(#selection-mask)" />
+      </svg>
+      <div id="selection-border"></div>
+    </div>
+
+    <div id="selection-hint" class="hidden">Click and drag to select a region</div>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="toolbar">
+      <div id="tools">
+        <button class="tool-btn active" data-tool="pen" title="Pen (P)">✏️</button>
+        <button class="tool-btn" data-tool="rect" title="Rectangle (R)">▭</button>
+        <button class="tool-btn" data-tool="arrow" title="Arrow (A)">↗</button>
+      </div>
+
+      <div class="toolbar-sep"></div>
+
+      <button id="region-btn" title="Select region to annotate">⬒ Region</button>
+
+      <div id="colors">
+        <button class="color-btn active" data-color="#EF4444" style="background:#EF4444" title="Red"></button>
+        <button class="color-btn" data-color="#F97316" style="background:#F97316" title="Orange"></button>
+        <button class="color-btn" data-color="#FACC15" style="background:#FACC15" title="Yellow"></button>
+        <button class="color-btn" data-color="#22C55E" style="background:#22C55E" title="Green"></button>
+        <button class="color-btn" data-color="#3B82F6" style="background:#3B82F6" title="Blue"></button>
+        <button class="color-btn" data-color="#FFFFFF" style="background:#FFFFFF" title="White"></button>
+      </div>
+
+      <div id="size-control">
+        <input type="range" id="brush-size" min="1" max="20" value="4" title="Brush size" />
+      </div>
+
+      <button id="undo-btn" title="Undo (Ctrl+Z)">↩</button>
+      <button id="clear-btn" title="Clear canvas">✕ Clear</button>
+    </div>
+
+    <div id="report-panel">
+      <input
+        type="text"
+        id="webhook-input"
+        placeholder="Webhook URL (saved automatically)"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <input
+        type="text"
+        id="comment-input"
+        placeholder="Add a comment…"
+        maxlength="500"
+        autocomplete="off"
+      />
+      <div id="panel-actions">
+        <button id="cancel-btn">Cancel (Esc)</button>
+        <button id="send-btn">Send Report ↑</button>
+      </div>
+      <div id="status-msg"></div>
+    </div>
+
+    <script type="module" src="../../dist/renderer/renderer.js"></script>
+  </body>
+</html>

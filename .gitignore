@@ -1,0 +1,10 @@
+node_modules/
+dist/
+release/
+*.js.map
+*.d.ts
+*.tsbuildinfo
+.DS_Store
+Thumbs.db
+notes.md
+.claude/
