@@ -123,7 +123,10 @@ function sendToWebhook(
 }
 
 function setupTray(): void {
-  const iconPath = path.join(__dirname, "../../../assets/icon.ico");
+  const iconFile = process.platform === "win32" ? "icon.ico"
+    : process.platform === "darwin" ? "icon.icns"
+    : "icon.png";
+  const iconPath = path.join(__dirname, "../../../assets", iconFile);
   const icon = nativeImage.createFromPath(iconPath);
   tray = new Tray(icon);
   const menu = Menu.buildFromTemplate([

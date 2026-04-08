@@ -63,8 +63,9 @@
       "icon": "assets/icon.icns"
     },
     "linux": {
-      "target": "AppImage",
-      "icon": "assets/icon.png"
+      "target": "deb",
+      "icon": "assets/icon.png",
+      "category": "Utility"
     },
     "publish": {
       "provider": "github",

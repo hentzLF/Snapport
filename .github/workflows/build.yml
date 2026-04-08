@@ -45,7 +45,6 @@ jobs:
           path: |
             release/*.exe
             release/*.dmg
-            release/*.AppImage
             release/*.deb
             release/*.yml
 
