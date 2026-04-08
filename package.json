@@ -22,7 +22,10 @@
     "electron",
     "desktop"
   ],
-  "author": "",
+  "author": {
+    "name": "hentzLF",
+    "email": "hentzlf@users.noreply.github.com"
+  },
   "license": "MIT",
   "dependencies": {
     "electron-updater": "^6.8.3"
