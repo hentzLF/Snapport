@@ -1,6 +1,6 @@
 {
   "name": "snapport",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Capture. Annotate. Report. Instantly.",
   "main": "dist/main/main/main.js",
   "scripts": {
