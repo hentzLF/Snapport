@@ -16,6 +16,10 @@ import http from "http";
 import { URL } from "url";
 import { isDiscordWebhook, sendDiscordWebhook } from "./webhooks/discord";
 
+if (process.platform === "linux") {
+  app.commandLine.appendSwitch("ozone-platform-hint", "x11");
+}
+
 let overlayWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let updateState: "none" | "available" | "downloaded" = "none";
