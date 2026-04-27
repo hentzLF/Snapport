@@ -32,11 +32,31 @@ Head to the [Releases page](../../releases/latest) and download the installer fo
 
 | OS | File | Install |
 |----|------|---------|
-| **Windows** | `Snapport-Setup-x.x.x.exe` | Double-click → follow the wizard → launch from Start menu |
-| **macOS** | `Snapport-x.x.x.dmg` | Double-click → drag Snapport to Applications → launch from Launchpad |
-| **Linux** | `Snapport-x.x.x.AppImage` | `chmod +x Snapport-*.AppImage` → double-click or run from terminal |
+| **Windows** | `Snapport.Setup.x.x.x.exe` | Double-click → follow the wizard → launch from Start menu |
+| **macOS (Apple Silicon)** | `Snapport-x.x.x-arm64.dmg` | Open DMG → drag to Applications (M1/M2/M3/M4 Macs) |
+| **macOS (Intel)** | `Snapport-x.x.x-x64.dmg` | Open DMG → drag to Applications (pre-2020 Macs) |
+| **Linux (Debian/Ubuntu)** | `snapport_x.x.x_amd64.deb` | `sudo dpkg -i snapport_*.deb` |
+| **Linux (any distro)** | `Snapport-x.x.x.AppImage` | `chmod +x Snapport-*.AppImage` → double-click or run from terminal |
 
 That's it — no Node.js, no terminal, no code required.
+
+### macOS: "app is damaged" or "unidentified developer" warning
+
+Snapport is not yet code-signed. macOS Gatekeeper will block it on first launch. To open it:
+
+1. Open **System Settings** → **Privacy & Security**
+2. Scroll down — you'll see a message about Snapport being blocked
+3. Click **Open Anyway**
+
+Or from the terminal:
+```bash
+xattr -cr /Applications/Snapport.app
+```
+
+### Linux: notes
+
+- **Debian/Ubuntu** — the `.deb` installs Snapport system-wide. Launch from your app menu or run `snapport` in terminal.
+- **Other distros** — use the `.AppImage`. No installation needed — just make it executable and run.
 
 ---
 
@@ -91,13 +111,13 @@ Double-click the installer → Snapport appears in your Start menu.
 npm run dist:mac
 ```
 
-Output: `release/Snapport-x.x.x.dmg`
+Output: `release/Snapport-x.x.x-arm64.dmg` and `release/Snapport-x.x.x-x64.dmg`
 
-Open the DMG → drag to Applications → launch from Launchpad or Spotlight.
+Open the DMG for your architecture → drag to Applications → launch from Launchpad or Spotlight.
 
 **Note:** If you get a "damaged app" warning, run:
 ```bash
-xattr -cr release/Snapport-x.x.x.dmg
+xattr -cr /Applications/Snapport.app
 ```
 This happens because the app is not code-signed. For distribution, set up an [Apple Developer certificate](https://www.electron.build/code-signing).
 
@@ -110,29 +130,18 @@ This happens because the app is not code-signed. For distribution, set up an [Ap
 npm run dist:linux
 ```
 
-Output: `release/Snapport-x.x.x.AppImage`
+Output: `release/snapport_x.x.x_amd64.deb` and `release/Snapport-x.x.x.AppImage`
 
-Make it executable and run:
+**Debian/Ubuntu:**
+```bash
+sudo dpkg -i release/snapport_*.deb
+```
+
+**Any distro (AppImage):**
 ```bash
 chmod +x release/Snapport-*.AppImage
 ./release/Snapport-*.AppImage
 ```
-
-**Optional — desktop integration:**
-```bash
-mv release/Snapport-*.AppImage ~/.local/bin/Snapport.AppImage
-
-cat > ~/.local/share/applications/snapport.desktop << 'EOF'
-[Desktop Entry]
-Name=Snapport
-Exec=$HOME/.local/bin/Snapport.AppImage
-Icon=snapport
-Type=Application
-Categories=Utility;Development;
-EOF
-```
-
-Snapport will now show up in your application launcher.
 
 </details>
 
@@ -144,22 +153,18 @@ To build for **all** platforms automatically, push a version tag — GitHub Acti
 
 ## Automated Releases (CI/CD)
 
-This repo includes a GitHub Actions workflow that builds installers for all three platforms whenever you push a version tag.
+This repo includes a GitHub Actions workflow that builds installers for all platforms on every push to `main`.
 
 ### How to create a release
 
-```bash
-# 1. Bump the version in package.json
-npm version patch    # or: npm version minor / npm version major
-
-# 2. Push the commit and tag
-git push && git push --tags
-```
+1. Bump the `version` in `package.json` (so the release gets a new tag)
+2. Commit and push to `main`
 
 GitHub Actions will:
-1. Spin up Windows, macOS, and Linux build machines
-2. Build platform-specific installers on each
-3. Create a GitHub Release with all three installers attached
+1. Build on Windows, macOS, and Linux runners in parallel
+2. macOS builds both Intel (x64) and Apple Silicon (arm64) DMGs
+3. Linux builds both `.deb` and `.AppImage`
+4. Create a GitHub Release with all installers attached
 
 Check progress at **Actions** tab → **Build & Release** workflow.
 
