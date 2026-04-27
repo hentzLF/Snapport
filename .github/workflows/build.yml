@@ -46,7 +46,9 @@ jobs:
             release/*.exe
             release/*.dmg
             release/*.deb
+            release/*.AppImage
             release/*.yml
+            release/*.blockmap
 
   release:
     needs: build

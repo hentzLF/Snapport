@@ -123,15 +123,16 @@ function sendToWebhook(
 }
 
 function setupTray(): void {
-  const iconFile = process.platform === "win32" ? "icon.ico"
-    : process.platform === "darwin" ? "icon.icns"
-    : "icon.png";
+  const iconFile = process.platform === "win32" ? "icon.ico" : "icon.png";
   const iconPath = path.join(__dirname, "../../../assets", iconFile);
   const icon = nativeImage.createFromPath(iconPath);
+  if (process.platform === "darwin") icon.setTemplateImage(true);
   tray = new Tray(icon);
   const menu = Menu.buildFromTemplate([
     {
-      label: "Open Snapport (Ctrl+Shift+F)",
+      label: process.platform === "darwin"
+        ? "Open Snapport (⌘+Shift+F)"
+        : "Open Snapport (Ctrl+Shift+F)",
       click: showOverlay,
     },
     { type: "separator" },

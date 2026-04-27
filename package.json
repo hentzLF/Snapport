@@ -1,6 +1,6 @@
 {
   "name": "snapport",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Capture. Annotate. Report. Instantly.",
   "main": "dist/main/main/main.js",
   "scripts": {
@@ -62,13 +62,30 @@
       "shortcutName": "Snapport"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "assets/icon.icns"
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["x64", "arm64"]
+        }
+      ],
+      "icon": "assets/icon.icns",
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist"
     },
     "linux": {
-      "target": "deb",
+      "target": [
+        "deb",
+        "AppImage"
+      ],
       "icon": "assets/icon.png",
-      "category": "Utility"
+      "category": "Utility",
+      "desktop": {
+        "Name": "Snapport",
+        "Comment": "Capture. Annotate. Report. Instantly.",
+        "Categories": "Utility;Graphics;"
+      }
     },
     "publish": {
       "provider": "github",
